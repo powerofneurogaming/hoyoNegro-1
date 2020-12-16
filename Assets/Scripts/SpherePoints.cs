@@ -45,6 +45,7 @@ public class SpherePoints : MonoBehaviour
             obj.transform.position = point;
             Spheres.Add(obj);
             obj.transform.SetParent(PointsParent);
+            obj.GetComponent<Collider>().enabled = false;
             obj.tag="rPoint";
         }
         PointsParent.transform.localPosition = Vector3.zero;
