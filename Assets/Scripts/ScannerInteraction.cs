@@ -33,6 +33,11 @@ public class ScannerInteraction : MonoBehaviour
         if (project)
         {
             ProjectSPhere(ProjectionDistacne);
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                Destroy(placingSphere);
+                project = false;
+            }
         }
         if(Input.GetKeyDown(KeyCode.E))
         {

@@ -24,6 +24,7 @@ public class SupplyBot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //navigation
         if (Vector3.Distance(transform.position, waypoints[waypointIndex]) < TriggerDistance)
         {
             waypointIndex++;
@@ -38,6 +39,8 @@ public class SupplyBot : MonoBehaviour
         }
         transform.position += transform.forward * Time.deltaTime * 5;
         PowerUpTimer += Time.deltaTime;
+
+        //pop out power ups
         if (PowerUpTimer > PowerUpCooldown)
         {
             bool canSpawn = true;
