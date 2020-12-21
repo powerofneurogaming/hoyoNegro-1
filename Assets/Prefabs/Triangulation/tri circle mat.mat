@@ -26,5 +26,5 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats: []
     m_Colors:
-    - Color_255780E6: {r: 0, g: 1, b: 0, a: 0}
+    - Color_255780E6: {r: 0, g: 1, b: 0.15345359, a: 0}
     - Color_E65100E6: {r: 0, g: 0.41960785, b: 0, a: 0}
