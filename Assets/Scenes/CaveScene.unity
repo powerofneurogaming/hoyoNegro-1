@@ -14774,16 +14774,7 @@ MeshCollider:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< Updated upstream
-  m_GameObject: {fileID: 1043826230}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -5985165005869657662, guid: 8eb7bb2302800c64fa1036b7f6de2df4, type: 3}
-=======
+
   m_Name: pb_Mesh19650
   serializedVersion: 10
   m_SubMeshes:
@@ -14941,7 +14932,7 @@ MeshCollider:
     offset: 0
     size: 0
     path: 
->>>>>>> Stashed changes
+
 --- !u!1 &1049366387
 GameObject:
   m_ObjectHideFlags: 0
