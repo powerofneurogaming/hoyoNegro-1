@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: de0e5beff72bae646b6c10e6f662853d
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - redMat: {instanceID: 0}
+  - defaultMat: {instanceID: 0}
+  - PointsParent: {instanceID: 0}
+  - target: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

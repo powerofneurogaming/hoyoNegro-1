@@ -44,7 +44,7 @@ public class LevelLoader : MonoBehaviour
             color.a = Mathf.Lerp(start,finish, elapsed / time);
             //Debug.Log(color.a);
             callToBlack.color= color;
-            Debug.Log(callToBlack.color.a);
+            //Debug.Log(callToBlack.color.a);
             yield return new WaitForSeconds(Time.deltaTime);
         }
         if(load == true) {

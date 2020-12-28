@@ -9,8 +9,9 @@ public class playerMovement : MonoBehaviour
     public CharacterController controller;   
     public float movementSpeed = 12f;
     public AudioSource clickSound;
-    
 
+    public bool MoveAlongCamera = true;
+    Vector3 move;
     private void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -25,11 +26,15 @@ public class playerMovement : MonoBehaviour
         float y = Input.GetAxis("Float");
         float z = Input.GetAxis("Vertical");
 
-        //Create Vector3 variable
-        Vector3 move = transform.right * x + transform.up * y + transform.forward * z;
-        //Debug.Log("x: " + x);
-        //Debug.Log("z: " + z);
-        //Debug.Log(move);
+        if (!MoveAlongCamera)
+        {
+            move = transform.right * x + transform.up * y + transform.forward * z;
+        }
+        else
+        {
+            move = Camera.main.transform.forward * z + transform.up * y + Camera.main.transform.right * x;
+        }
+
 
         controller.Move(move*movementSpeed*Time.deltaTime);
     }
