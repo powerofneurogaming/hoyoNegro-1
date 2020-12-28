@@ -71,7 +71,7 @@ public class MeshSlicer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Holder.transform.Rotate(spin * Time.deltaTime*5);
+        Holder.transform.Rotate(Vector3.one * Time.deltaTime*5);
         //foreach (Transform t in Holder)
         //{
         //    Debug.Log(t.GetComponent<Renderer>().material.color);
