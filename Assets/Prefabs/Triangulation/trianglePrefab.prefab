@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 522439732561393733}
   - component: {fileID: 8798646724484661875}
   - component: {fileID: 2965510400941751946}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: trianglePrefab
   m_TagString: rPoint
   m_Icon: {fileID: 0}
