@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoneInfomation : MonoBehaviour
+public class BoneInfomation : Singleton<BoneInfomation>
 {
 
     Transform BearTrs;

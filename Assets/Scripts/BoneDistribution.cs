@@ -22,6 +22,7 @@ public class BoneDistribution : MonoBehaviour
             Bear.transform.SetParent(holder.transform);
             Bear.GetComponent<Bone>().AnimalInt = 0;
             Bear.GetComponent<Bone>().indexer = Bear.transform.GetSiblingIndex();
+            Bear.name = "bear" + Bear.transform.GetSiblingIndex().ToString();
         }
         holder = new GameObject("Elephant");
         holder.transform.SetParent(transform);
@@ -32,6 +33,7 @@ public class BoneDistribution : MonoBehaviour
             Elephant.transform.SetParent(holder.transform);
             Elephant.GetComponent<Bone>().AnimalInt = 1;
             Elephant.GetComponent<Bone>().indexer = Elephant.transform.GetSiblingIndex();
+            Elephant.name = "bear" + Elephant.transform.GetSiblingIndex().ToString();
         }
         holder = new GameObject("Naia");
         holder.transform.SetParent(transform);
@@ -42,6 +44,7 @@ public class BoneDistribution : MonoBehaviour
             Naia.transform.SetParent(holder.transform);
             Naia.GetComponent<Bone>().AnimalInt = 2;
             Naia.GetComponent<Bone>().indexer = Naia.transform.GetSiblingIndex();
+            Naia.name = "bear" + Naia.transform.GetSiblingIndex().ToString();
         }
         holder = new GameObject("Sloth");
         holder.transform.SetParent(transform);
@@ -52,6 +55,7 @@ public class BoneDistribution : MonoBehaviour
             Sloth.transform.SetParent(holder.transform);
             Sloth.GetComponent<Bone>().AnimalInt = 3;
             Sloth.GetComponent<Bone>().indexer = Sloth.transform.GetSiblingIndex();
+            Sloth.name = "bear" + Sloth.transform.GetSiblingIndex().ToString();
         }
         holder = new GameObject("Tiger");
         holder.transform.SetParent(transform);
@@ -62,6 +66,7 @@ public class BoneDistribution : MonoBehaviour
             Tiger.transform.SetParent(holder.transform);
             Tiger.GetComponent<Bone>().AnimalInt = 4;
             Tiger.GetComponent<Bone>().indexer = Tiger.transform.GetSiblingIndex();
+            Tiger.name = "bear" + Tiger.transform.GetSiblingIndex().ToString();
         }
         holder = new GameObject("Wolf");
         holder.transform.SetParent(transform);
@@ -72,6 +77,7 @@ public class BoneDistribution : MonoBehaviour
             Wolf.transform.SetParent(holder.transform);
             Wolf.GetComponent<Bone>().AnimalInt = 5;
             Wolf.GetComponent<Bone>().indexer = Wolf.transform.GetSiblingIndex();
+            Wolf.name = "bear" + Wolf.transform.GetSiblingIndex().ToString();
         }
         PresetBoneList.SetActive(false);
         GameObject.FindObjectOfType<BoneInfomation>().GrabObjects(transform); ;

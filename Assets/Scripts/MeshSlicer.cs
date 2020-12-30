@@ -83,10 +83,10 @@ public class MeshSlicer : MonoBehaviour
         //    bool inside = Vector3.Angle(planeVec, targetVec) < AccAngle;
         //    t.GetComponent<MeshRenderer>().material.SetColor("_Color", inside ? Color.green : Color.blue);
         //}
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Toggle();
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    Toggle();
+        //}
     }
 
     float sphereRadius;
