@@ -79,7 +79,6 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             }
         }
         
-        
         //triangulation sphere
         if (Input.GetKeyDown(KeyCode.Q))
         {
