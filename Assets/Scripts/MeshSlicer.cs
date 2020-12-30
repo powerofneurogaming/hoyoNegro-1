@@ -22,8 +22,8 @@ public class MeshSlicer : MonoBehaviour
         Holder = transform.Find("Triangles");
         Triangles = mesh.triangles;
         Vertices = mesh.vertices;
-        Debug.Log(Triangles.Length);
-        Debug.Log(Vertices.Length);
+        //Debug.Log(Triangles.Length);
+        //Debug.Log(Vertices.Length);
         //generate the meshes
         for(int TriCount = 0; TriCount < Triangles.Length; TriCount++)
         {
@@ -43,7 +43,7 @@ public class MeshSlicer : MonoBehaviour
                     obj.GetComponent<MeshRenderer>().material = new Material(litMat);
                     float scale = obj.transform.localScale.x;
                     Mesh TriMesh = obj.GetComponent<MeshFilter>().mesh;
-                    Debug.Log(currTriVerts[0]); Debug.Log(currTriVerts[1]); Debug.Log(currTriVerts[2]);
+                    //Debug.Log(currTriVerts[0]); Debug.Log(currTriVerts[1]); Debug.Log(currTriVerts[2]);
                     obj.transform.position = Vector3.zero;
                     TriMesh.vertices = new Vector3[] { currTriVerts[0]/scale+transform.position, currTriVerts[1]/scale+transform.position, currTriVerts[2]/scale+transform.position};
                     TriMesh.triangles = new int[] { 0, 1, 2 };
@@ -97,7 +97,7 @@ public class MeshSlicer : MonoBehaviour
         collisionSphere.transform.position = (target.position - transform.position).normalized * TargetRadius+transform.position;
         sphereRadius = 2 * TargetRadius * Mathf.Sin(AccAngle / 2 * Mathf.Deg2Rad);
         collisionSphere.transform.localScale = Vector3.one * sphereRadius;
-        Debug.Log(sphereRadius);
+        //Debug.Log(sphereRadius);
         VisualSphere = (target.transform.position - transform.position).normalized * TargetRadius + transform.position;
         //Vector3 center =
     }

@@ -38,7 +38,7 @@ public class SpherePoints : MonoBehaviour
         VisualSphere = target.transform.position - transform.position.normalized * TargetRadius + transform.position;
         PointsParent = transform.Find("Points");
         center = transform.position;
-        Debug.Log(transform.position);
+        //Debug.Log(transform.position);
         foreach(Vector3 point in PointsOnSphere(PointCount))
         {
             var obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);

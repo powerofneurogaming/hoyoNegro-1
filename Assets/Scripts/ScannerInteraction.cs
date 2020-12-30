@@ -16,6 +16,10 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
 
     //use q to place
     //use E to interact
+    int ProbMax = 3;
+    int ProbeCount = 3;
+    float DismantleTimer=2;
+    float DismantleCounter = 0;
 
     public bool project = false;
     float sonarCD = 5f;
@@ -25,6 +29,8 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     // Update is called once per frame
     void Update()
     {
+
+        //collection input
         if (Input.GetMouseButtonDown(1))
         {
             if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
@@ -37,6 +43,8 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             }
         }
 
+
+        //sonar input
         if (Input.GetKeyDown(KeyCode.R))
         {
             Instantiate(Sonar, transform.position, Quaternion.identity);
@@ -72,13 +80,21 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
         }
         
         
-        
+        //triangulation sphere
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if (placingSphere == null)
             {
-                project = true;
-                placingSphere = Instantiate(spherePrefab, transform.position, Quaternion.identity);
+                if (ProbeCount > 0)
+                {
+                    project = true;
+                    placingSphere = Instantiate(spherePrefab, transform.position, Quaternion.identity);
+                }
+            }
+            else
+            {
+                Destroy(placingSphere);
+                project = false;
             }
         }
         if (project)
@@ -90,19 +106,43 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             if (project)
             {
                 project = false;
-                placingSphere.GetComponent<SpherePoints>().enabled = true;
+                //placingSphere.GetComponent<SpherePoints>().enabled = true;
                 placingSphere = null;
+                ProbeCount--;
             }
             else if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
             {
+                Debug.Log(hit.transform.name);
                 if (hit.transform.gameObject.tag == "Sphere")
                 {
                     Debug.Log("called");
-                    var SphereScript = hit.transform.GetComponent<MeshSlicer>();
+                    var SphereScript = hit.transform.Find("Icosphere").GetComponent<MeshSlicer>();
                     SphereScript.Toggle();
                 }
             }
         }
+        if (Input.GetKey(KeyCode.F))
+        {
+            if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
+            {
+                if (hit.transform.tag == "Sphere")
+                {
+                    DismantleCounter += Time.deltaTime;
+                    Debug.Log(DismantleCounter);
+                    if (DismantleCounter > DismantleTimer)
+                    {
+                        Destroy(hit.transform.gameObject);
+                        ProbeCount++;
+                    }
+                }
+            }
+        }
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            DismantleCounter = 0;
+        }
+
+        //debug section
         if(Input.GetKeyDown(KeyCode.Keypad0))
         {
             foreach(var v in BoneInfomation.instance.holders)
