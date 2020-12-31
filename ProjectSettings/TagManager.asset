@@ -7,6 +7,7 @@ TagManager:
   - rPoint
   - Sphere
   - bones
+  - collector
   layers:
   - Default
   - TransparentFX

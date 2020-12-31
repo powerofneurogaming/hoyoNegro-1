@@ -21,11 +21,16 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     float DismantleTimer=2;
     float DismantleCounter = 0;
 
+    int CollectorMax = 3;
+    int CollectorCount = 3;
+
     public bool project = false;
     float sonarCD = 5f;
-    GameObject placingSphere;
+    GameObject placingSphere = null;
     public GameObject Sonar;
     public GameObject currSonarTarget;
+
+    public GameObject CollectionOrb;
     // Update is called once per frame
     void Update()
     {
@@ -86,16 +91,27 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             {
                 if (ProbeCount > 0)
                 {
-                    project = true;
                     placingSphere = Instantiate(spherePrefab, transform.position, Quaternion.identity);
+                    project = true;
                 }
+            }
+            else if (placingSphere.tag == "Sphere")
+            {
+                Destroy(placingSphere);
+                placingSphere = null;
+                project = false;
             }
             else
             {
-                Destroy(placingSphere);
-                project = false;
+                if (ProbeCount > 0)
+                {
+                    Destroy(placingSphere);
+                    placingSphere = Instantiate(spherePrefab, transform.position, Quaternion.identity);
+                    project = true;
+                }
             }
         }
+
         if (project)
         {
             ProjectSPhere(ProjectionDistacne);
@@ -106,8 +122,17 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             {
                 project = false;
                 //placingSphere.GetComponent<SpherePoints>().enabled = true;
+                
+                if (placingSphere.tag=="Sphere")
+                {
+                    ProbeCount--;
+                }
+                else
+                {
+                    CollectorCount--;
+                    placingSphere.GetComponent<CollectionSphere>().enabled = true;
+                }
                 placingSphere = null;
-                ProbeCount--;
             }
             else if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
             {
@@ -120,25 +145,60 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                 }
             }
         }
-        if (Input.GetKey(KeyCode.F))
+        if (Input.GetKey(KeyCode.F) && !project)
         {
             if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
             {
-                if (hit.transform.tag == "Sphere")
+                if (hit.transform.tag == "Sphere" || hit.transform.tag=="collector")
                 {
                     DismantleCounter += Time.deltaTime;
                     Debug.Log(DismantleCounter);
                     if (DismantleCounter > DismantleTimer)
                     {
                         Destroy(hit.transform.gameObject);
-                        ProbeCount++;
+                        if (hit.transform.tag == "Sphere")
+                        {
+                            ProbeCount++;
+                        }
+                        else
+                        {
+                            CollectorCount++;
+                        }
                     }
                 }
             }
         }
+        
         if (Input.GetKeyUp(KeyCode.F))
         {
             DismantleCounter = 0;
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (placingSphere == null)
+            {
+                if (CollectorCount > 0)
+                {
+                    placingSphere = Instantiate(CollectionOrb, transform.position, Quaternion.identity);
+                    project = true;
+                }
+            }
+            else if (placingSphere.tag == "collector")
+            {
+                Destroy(placingSphere);
+                placingSphere = null;
+                project = false;
+            }
+            else
+            {
+                if (CollectorCount > 0)
+                {
+                    Destroy(placingSphere);
+                    placingSphere = Instantiate(CollectionOrb, transform.position, Quaternion.identity);
+                    project = true;
+                }
+            }
         }
 
         //debug section

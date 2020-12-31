@@ -11924,6 +11924,8 @@ MonoBehaviour:
   project: 0
   Sonar: {fileID: 7685142910956468635, guid: 42dd0760567d5fb49b2f56ed0a7e2d19, type: 3}
   currSonarTarget: {fileID: 0}
+  CollectionOrb: {fileID: 231190067291236481, guid: 016bf9c52b9d97d4fa375a29ea87322d,
+    type: 3}
 --- !u!82 &835275779
 AudioSource:
   m_ObjectHideFlags: 0
