@@ -16,7 +16,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
 
     //use q to place
     //use E to interact
-    int ProbMax = 3;
+    int ProbeMax = 3;
     int ProbeCount = 3;
     float DismantleTimer=2;
     float DismantleCounter = 0;
@@ -31,6 +31,8 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     public GameObject currSonarTarget;
 
     public GameObject CollectionOrb;
+    int collected = 0;
+    public int stage = 0;
     // Update is called once per frame
     void Update()
     {
@@ -44,6 +46,8 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                 {
                     Bone bone = hit.transform.GetComponent<Bone>();
                     BoneInfomation.instance.CollectBone(bone);
+                    collected++;
+                    stage = Mathf.FloorToInt(collected / 10);
                 }
             }
         }
@@ -142,6 +146,20 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                     Debug.Log("called");
                     var SphereScript = hit.transform.Find("Icosphere").GetComponent<MeshSlicer>();
                     SphereScript.Toggle();
+                }
+                else if(hit.transform.gameObject.tag == "powerup")
+                {
+                    if (hit.transform.name.Contains("Scanner"))
+                    {
+                        ProbeCount++;
+                        ProbeMax++;
+                    }
+                    else
+                    {
+                        CollectorMax++;
+                        CollectorCount++;
+                    }
+                    Destroy(hit.transform.gameObject);
                 }
             }
         }
