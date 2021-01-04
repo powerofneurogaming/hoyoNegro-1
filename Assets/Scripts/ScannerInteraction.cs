@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScannerInteraction : Singleton<ScannerInteraction>
 {
@@ -11,6 +12,9 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     void Start()
     {
         CamTrs = Camera.main.transform;
+        SonarText.text = "0";
+        ProbcountText.text = ProbeCount.ToString() + "/" + ProbeMax.ToString();
+        CollectorCountText.text = CollectorCount.ToString() + "/" + CollectorMax.ToString();
     }
 
 
@@ -18,7 +22,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     //use E to interact
     int ProbeMax = 3;
     int ProbeCount = 3;
-    float DismantleTimer=2;
+    float DismantleTimer=1;
     float DismantleCounter = 0;
 
     int CollectorMax = 3;
@@ -33,11 +37,24 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     public GameObject CollectionOrb;
     int collected = 0;
     public int stage = 0;
+
+    bool sonarReady = true;
+    float sonarCooldownTime = 5f;
+
+    public Text SonarText;
+    public Text ProbcountText;
+    public Text CollectorCountText;
+
+    public GameObject probeTips;
+    public GameObject collectorTips;
+    public GameObject placingTips;
+    public GameObject DeconstructionTips;
+    public Image DeconstructionBar;
     // Update is called once per frame
     void Update()
     {
 
-        //collection input
+        //collect input
         if (Input.GetMouseButtonDown(1))
         {
             if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
@@ -54,7 +71,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
 
 
         //sonar input
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && sonarReady)
         {
             Instantiate(Sonar, transform.position, Quaternion.identity);
             Transform closest = null; float iniDist = 1000;
@@ -86,6 +103,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                     currSonarTarget = null;
                 }
             }
+            StartCoroutine(SonarCooldown(sonarCooldownTime));
         }
         
         //triangulation sphere
@@ -120,6 +138,8 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
         {
             ProjectSPhere(ProjectionDistacne);
         }
+
+        //general interaction key
         if(Input.GetKeyDown(KeyCode.E))
         {
             if (project)
@@ -130,10 +150,12 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                 if (placingSphere.tag=="Sphere")
                 {
                     ProbeCount--;
+                    ProbcountText.text = ProbeCount.ToString() + "/" + ProbeMax.ToString();
                 }
                 else
                 {
                     CollectorCount--;
+                    CollectorCountText.text = CollectorCount.ToString() + "/" + CollectorMax.ToString();
                     placingSphere.GetComponent<CollectionSphere>().enabled = true;
                 }
                 placingSphere = null;
@@ -163,6 +185,8 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                 }
             }
         }
+
+        //pickup key
         if (Input.GetKey(KeyCode.F) && !project)
         {
             if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
@@ -177,10 +201,12 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                         if (hit.transform.tag == "Sphere")
                         {
                             ProbeCount++;
+                            ProbcountText.text = ProbeCount.ToString() + "/" + ProbeMax.ToString();
                         }
                         else
                         {
                             CollectorCount++;
+                            CollectorCountText.text = CollectorCount.ToString() + "/" + CollectorMax.ToString();
                         }
                     }
                 }
@@ -192,6 +218,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             DismantleCounter = 0;
         }
 
+        //collector key
         if (Input.GetKeyDown(KeyCode.C))
         {
             if (placingSphere == null)
@@ -218,6 +245,36 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                 }
             }
         }
+
+        probeTips.SetActive(false);
+        collectorTips.SetActive(false);
+        placingTips.SetActive(false);
+        DeconstructionTips.SetActive(false);
+        //tooltip section
+        if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
+        {
+            if (DismantleCounter > 0)
+            {
+                DeconstructionTips.SetActive(true);
+                DeconstructionBar.fillAmount = DismantleCounter / DismantleTimer;
+            }
+            else if (project)
+            {
+                placingTips.SetActive(true);
+            }
+            else if (hit.transform.tag == "Sphere")
+            {
+                probeTips.SetActive(true);
+            }
+            else if (hit.transform.tag == "collector")
+            {
+                collectorTips.SetActive(true);
+            }
+            
+        }
+
+
+
 
         //debug section
         if(Input.GetKeyDown(KeyCode.Keypad0))
@@ -304,6 +361,21 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             yield return new WaitForSeconds(0.5f);
         }
 
+        yield return null;
+    }
+    public Image sonarkeyUI;
+    IEnumerator SonarCooldown(float time)
+    {
+        float counter = 0;
+        sonarReady = false;
+        while (counter < time)
+        {
+            counter += Time.deltaTime;
+            sonarkeyUI.fillAmount = counter / time;
+            SonarText.text = (time - counter).ToString("0.##");
+            yield return null;
+        }
+        sonarReady = true;
         yield return null;
     }
 }
