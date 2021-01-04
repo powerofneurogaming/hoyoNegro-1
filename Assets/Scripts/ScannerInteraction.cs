@@ -50,9 +50,16 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     public GameObject placingTips;
     public GameObject DeconstructionTips;
     public Image DeconstructionBar;
+
+    public GameObject HUD;
+
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            HUD.SetActive(false);
+        }
 
         //collect input
         if (Input.GetMouseButtonDown(1))

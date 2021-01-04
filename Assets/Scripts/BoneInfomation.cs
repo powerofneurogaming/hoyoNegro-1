@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class BoneInfomation : Singleton<BoneInfomation>
 {
@@ -13,6 +15,7 @@ public class BoneInfomation : Singleton<BoneInfomation>
     Transform WolfTrs;
     public List<Transform> holders = new List<Transform>();
     public int index;
+
     public void GrabObjects(Transform parentTrs)
     {
         BearTrs = parentTrs.Find("Bear");
@@ -48,14 +51,29 @@ public class BoneInfomation : Singleton<BoneInfomation>
     public Transform TigerInfo;
     public Transform WolfInfo;
     public List<Transform> InfoTransforms;
+
+    
+    
+    public TextMeshProUGUI BearText;
+    public TextMeshProUGUI ElephantText;
+    public TextMeshProUGUI NaiaText;
+    public TextMeshProUGUI SlothText;
+    public TextMeshProUGUI TigerText;
+    public TextMeshProUGUI WolfText;
+    public List<TextMeshProUGUI> TextList;
+    public int[] boneCount = new int[] { 0, 0, 0, 0, 0, 0 };
     private void Start()
     {
         InfoTransforms = new List<Transform> { BearInfo, ElephantInfo, NaiaInfo, SlothInfo, TigerInfo, WolfInfo };
+        TextList = new List<TextMeshProUGUI> { BearText, ElephantText, NaiaText, SlothText, TigerText, WolfText };
+        foreach(var t in TextList) { t.text = "0/5"; }
     }
 
     public void CollectBone(Bone bone)
     {
         InfoTransforms[bone.AnimalInt].GetChild(bone.indexer).gameObject.SetActive(true);
+        boneCount[bone.AnimalInt]++;
+        TextList[bone.AnimalInt].text = boneCount[bone.AnimalInt].ToString() + "/5";
         bone.gameObject.SetActive(false);
     }
 }
