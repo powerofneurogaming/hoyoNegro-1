@@ -26,7 +26,7 @@ public class MeshSlicer : MonoBehaviour
         //Debug.Log(Triangles.Length);
         //Debug.Log(Vertices.Length);
         //generate the meshes
-        for(int TriCount = 0; TriCount < Triangles.Length; TriCount++)
+        for (int TriCount = 0; TriCount < Triangles.Length; TriCount++)
         {
             currTriVerts.Add(Vertices[Triangles[TriCount]]);
             if (TriCount % 3 == 2)
@@ -35,9 +35,9 @@ public class MeshSlicer : MonoBehaviour
                 {
                     //calculate spawn location
                     float x = 0; float y = 0; float z = 0;
-                    x = (currTriVerts[0].x + currTriVerts[1].x + currTriVerts[2].x)/3+transform.position.x;
-                    y = (currTriVerts[0].y + currTriVerts[1].y + currTriVerts[2].y)/3+transform.position.y;
-                    z = (currTriVerts[0].z + currTriVerts[1].z + currTriVerts[2].z)/3+transform.position.z;
+                    x = (currTriVerts[0].x + currTriVerts[1].x + currTriVerts[2].x) / 3 + transform.position.x;
+                    y = (currTriVerts[0].y + currTriVerts[1].y + currTriVerts[2].y) / 3 + transform.position.y;
+                    z = (currTriVerts[0].z + currTriVerts[1].z + currTriVerts[2].z) / 3 + transform.position.z;
 
                     //create mesh
                     var obj = Instantiate(Triangle, new Vector3(x, y, z), Quaternion.identity);
@@ -46,7 +46,7 @@ public class MeshSlicer : MonoBehaviour
                     Mesh TriMesh = obj.GetComponent<MeshFilter>().mesh;
                     //Debug.Log(currTriVerts[0]); Debug.Log(currTriVerts[1]); Debug.Log(currTriVerts[2]);
                     obj.transform.position = Vector3.zero;
-                    TriMesh.vertices = new Vector3[] { currTriVerts[0]/scale+transform.position, currTriVerts[1]/scale+transform.position, currTriVerts[2]/scale+transform.position};
+                    TriMesh.vertices = new Vector3[] { currTriVerts[0] / scale + transform.position, currTriVerts[1] / scale + transform.position, currTriVerts[2] / scale + transform.position };
                     TriMesh.triangles = new int[] { 0, 1, 2 };
                     obj.transform.SetParent(Holder);
                     obj.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.blue);
@@ -64,16 +64,24 @@ public class MeshSlicer : MonoBehaviour
         GetComponent<MeshRenderer>().enabled = false;
         GetComponent<MeshCollider>().enabled = false;
 
-        spin = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), Random.Range(-1, 1));
-        target = GameObject.FindGameObjectWithTag("bones").transform;
+        spin = new Vector3(minimalSpin(), minimalSpin(), minimalSpin());
+        if (ScannerInteraction.instance.currProbeTarget == null)
+        {
+            FindClosestBone();
+        }
         //LocateObject(0);
+    }
+
+    float minimalSpin()
+    {
+        return Random.Range(0.25f, 1f) * (Random.Range(0, 1) > 0.5f ? -1 : 1);
     }
 
     float velocity = 0;
     // Update is called once per frame
     void Update()
     {
-        LocateObject(0);
+        LocateObject(ScannerInteraction.instance.currProbeTarget);
         Holder.transform.Rotate(spin * Time.deltaTime*5);
         Holder.transform.localScale=Mathf.SmoothDamp(Holder.transform.localScale.x, Expanded ? TargetRadius : 1, ref velocity, 0.35f)*Vector3.one;
         //foreach (Transform t in Holder)
@@ -93,14 +101,38 @@ public class MeshSlicer : MonoBehaviour
     float sphereRadius;
     float TargetRadius = 10;
     Vector3 VisualSphere;
-    void LocateObject(float height)
+    void LocateObject(GameObject target)
     {
-        collisionSphere.transform.position = (target.position - transform.position).normalized * TargetRadius+transform.position;
-        sphereRadius = 2 * TargetRadius * Mathf.Sin(AccAngle / 2 * Mathf.Deg2Rad);
-        collisionSphere.transform.localScale = Vector3.one * sphereRadius;
-        //Debug.Log(sphereRadius);
-        VisualSphere = (target.transform.position - transform.position).normalized * TargetRadius + transform.position;
-        //Vector3 center =
+        if (target != null)
+        {
+            collisionSphere.transform.position = (target.transform.position - transform.position).normalized * TargetRadius + transform.position;
+            sphereRadius = 2 * TargetRadius * Mathf.Sin(AccAngle / 2 * Mathf.Deg2Rad);
+            collisionSphere.transform.localScale = Vector3.one * sphereRadius;
+            //Debug.Log(sphereRadius);
+            VisualSphere = (target.transform.position - transform.position).normalized * TargetRadius + transform.position;
+        }
+        else
+        {
+            collisionSphere.transform.position = Vector3.zero;
+        }
+    }
+
+    void FindClosestBone()
+    {
+        Debug.Log("scanning");
+        float distance = 1000;
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("bones");
+        GameObject target=null;
+        foreach (var v in targets)
+        {
+            if (Vector3.Distance(v.transform.position, transform.position) < distance && v.transform.GetSiblingIndex()==4)
+            {
+                target = v;
+                distance = Vector3.Distance(v.transform.position, transform.position);
+            }
+        }
+        Debug.Log(target.name);
+        ScannerInteraction.instance.currProbeTarget = target;
     }
 
     bool Expanded = false;

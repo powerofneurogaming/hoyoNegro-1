@@ -18,7 +18,8 @@ public class CollectionSphere : MonoBehaviour
         while (counter < target)
         {
             counter += Time.deltaTime;
-            transform.localScale = Vector3.one * Mathf.Lerp(3, 1, counter / target);
+            transform.localScale = Vector3.one+Vector3.one * Mathf.Sin(counter / target * Mathf.PI)*3;
+            //transform.localScale = Vector3.one * Mathf.Lerp(3, 1, counter / target);
             yield return null;
         }
         if (targetBone == null)
@@ -30,6 +31,7 @@ public class CollectionSphere : MonoBehaviour
             targetBone.transform.position = transform.position;
             targetBone.GetComponent<Bone>().collectable = true;
             targetBone.GetComponent<MeshRenderer>().enabled = true;
+            ScannerInteraction.instance.CollectorCount++;
             Destroy(gameObject);
         }
         yield return null;

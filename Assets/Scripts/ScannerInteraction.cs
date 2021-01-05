@@ -7,6 +7,8 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
 {
     public float ProjectionDistacne = 5;
     public GameObject spherePrefab;
+    public LayerMask layerIgnore;
+    AudioSource collectSound;
     Transform CamTrs;
     // Start is called before the first frame update
     void Start()
@@ -15,6 +17,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
         SonarText.text = "0";
         ProbcountText.text = ProbeCount.ToString() + "/" + ProbeMax.ToString();
         CollectorCountText.text = CollectorCount.ToString() + "/" + CollectorMax.ToString();
+        collectSound = transform.GetComponent<AudioSource>();
     }
 
 
@@ -25,14 +28,15 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     float DismantleTimer=1;
     float DismantleCounter = 0;
 
-    int CollectorMax = 3;
-    int CollectorCount = 3;
+    public int CollectorMax = 3;
+    public int CollectorCount = 3;
 
     public bool project = false;
     float sonarCD = 5f;
     GameObject placingSphere = null;
     public GameObject Sonar;
-    public GameObject currSonarTarget;
+    public GameObject currSonarTarget=null;
+    public GameObject currProbeTarget=null;
 
     public GameObject CollectionOrb;
     int collected = 0;
@@ -70,8 +74,10 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                 {
                     Bone bone = hit.transform.GetComponent<Bone>();
                     BoneInfomation.instance.CollectBone(bone);
+                    currProbeTarget = null;
                     collected++;
                     stage = Mathf.FloorToInt(collected / 10);
+                    collectSound.Play();
                 }
             }
         }
@@ -158,11 +164,14 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                 {
                     ProbeCount--;
                     ProbcountText.text = ProbeCount.ToString() + "/" + ProbeMax.ToString();
+                    placingSphere.transform.GetComponent<SphereCollider>().enabled = true;
+                    placingSphere.transform.Find("Icosphere").Find("Sphere").GetComponent<SphereCollider>().enabled = true;
                 }
                 else
                 {
                     CollectorCount--;
                     CollectorCountText.text = CollectorCount.ToString() + "/" + CollectorMax.ToString();
+                    placingSphere.GetComponent<SphereCollider>().enabled = true;
                     placingSphere.GetComponent<CollectionSphere>().enabled = true;
                 }
                 placingSphere = null;
@@ -208,12 +217,10 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                         if (hit.transform.tag == "Sphere")
                         {
                             ProbeCount++;
-                            ProbcountText.text = ProbeCount.ToString() + "/" + ProbeMax.ToString();
                         }
                         else
                         {
                             CollectorCount++;
-                            CollectorCountText.text = CollectorCount.ToString() + "/" + CollectorMax.ToString();
                         }
                     }
                 }
@@ -260,6 +267,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
         //tooltip section
         if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
         {
+            Debug.Log(hit.transform.name);
             if (DismantleCounter > 0)
             {
                 DeconstructionTips.SetActive(true);
@@ -280,11 +288,11 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             
         }
 
-
-
+        CollectorCountText.text = CollectorCount.ToString() + "/" + CollectorMax.ToString();
+        ProbcountText.text = ProbeCount.ToString() + "/" + ProbeMax.ToString();
 
         //debug section
-        if(Input.GetKeyDown(KeyCode.Keypad0))
+        if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             foreach(var v in BoneInfomation.instance.holders)
             {
@@ -329,7 +337,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     {
         Vector3 rayCastVector = CamTrs.forward;
         RaycastHit hit;
-        if (Physics.Raycast(CamTrs.position,CamTrs.forward,out hit,distance) && hit.transform.gameObject != placingSphere)
+        if (Physics.Raycast(CamTrs.position,CamTrs.forward,out hit,distance,~layerIgnore) && hit.transform.gameObject != placingSphere)
         {
             placingSphere.transform.position = hit.point;
         }
@@ -356,15 +364,15 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     {
         StartCoroutine(SonarFeedback(time, count));
     }
-
+    public Transform sonarSound;
     IEnumerator SonarFeedback(float time, int count)
     {
-        var audios = GetComponents<AudioSource>();
-        Debug.Log(audios[1].clip.name);
+        sonarSound.transform.position = currSonarTarget.transform.position;
+        var audios = sonarSound.GetComponent<AudioSource>();
         yield return new WaitForSeconds(time);
         for(int i = 0; i < count; i++)
         {
-            audios[1].Play();
+            audios.Play();
             yield return new WaitForSeconds(0.5f);
         }
 

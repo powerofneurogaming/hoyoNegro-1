@@ -10,6 +10,8 @@ public class pauseMenu : MonoBehaviour
     public static bool gameIsPaused = false;
     public GameObject pauseMenuUI;
     public GameObject bkg;
+    public Transform GroupsTrs;
+    public GameObject HUD;
 
     // Update is called once per frame
     private void Update()
@@ -22,6 +24,10 @@ public class pauseMenu : MonoBehaviour
             {
                 Pause();
             }
+            else
+            {
+                Resume();
+            }
         }
     }
 
@@ -31,6 +37,8 @@ public class pauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         pauseMenuUI.SetActive(false);
         bkg.SetActive(false);
+        foreach(Transform child in GroupsTrs) { child.gameObject.SetActive(false); }
+        HUD.SetActive(true);
         Time.timeScale = 1f;
         gameIsPaused = false;
     }
