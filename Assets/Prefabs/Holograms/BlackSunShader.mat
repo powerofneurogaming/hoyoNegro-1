@@ -22,4 +22,4 @@ Material:
     m_TexEnvs: []
     m_Floats: []
     m_Colors:
-    - Color_4E7E236B: {r: 1.716981, g: 0, b: 0.1461662, a: 0}
+    - Color_4E7E236B: {r: 1.4142135, g: 0.44922078, b: 0, a: 0}

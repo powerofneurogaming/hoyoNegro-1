@@ -14,6 +14,7 @@ public class MeshSlicer : MonoBehaviour
     public Transform target;
     public float AccAngle=30f;
     public GameObject collisionSphere;
+    public Color cyan = new Color(0, 204, 204);
     // Start is called before the first frame update
     void Start()
     {
