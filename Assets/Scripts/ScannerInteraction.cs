@@ -40,6 +40,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
 
     public GameObject CollectionOrb;
     int collected = 0;
+    public int prevstage = 0;
     public int stage = 0;
 
     bool sonarReady = true;
@@ -76,7 +77,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                     BoneInfomation.instance.CollectBone(bone);
                     currProbeTarget = null;
                     collected++;
-                    stage = Mathf.FloorToInt(collected / 10);
+                    stage = Mathf.FloorToInt(collected / 12);
                     collectSound.Play();
                 }
             }
@@ -84,7 +85,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
 
 
         //sonar input
-        if (Input.GetKeyDown(KeyCode.R) && sonarReady)
+        if (Input.GetKeyDown(KeyCode.R) && sonarReady && stage>0)
         {
             Instantiate(Sonar, transform.position, Quaternion.identity);
             Transform closest = null; float iniDist = 1000;
@@ -120,7 +121,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
         }
         
         //triangulation sphere
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && stage>1)
         {
             if (placingSphere == null)
             {
@@ -233,7 +234,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
         }
 
         //collector key
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && stage>1)
         {
             if (placingSphere == null)
             {
@@ -267,7 +268,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
         //tooltip section
         if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
         {
-            Debug.Log(hit.transform.name);
+            //Debug.Log(hit.transform.name);
             if (DismantleCounter > 0)
             {
                 DeconstructionTips.SetActive(true);
@@ -290,6 +291,27 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
 
         CollectorCountText.text = CollectorCount.ToString() + "/" + CollectorMax.ToString();
         ProbcountText.text = ProbeCount.ToString() + "/" + ProbeMax.ToString();
+
+        if(prevstage==0 && stage == 1)
+        {
+            DialogueBox.instance.gameObject.SetActive(true);
+            DialogueBox.instance.StartDialogue(2);
+            prevstage = 1;
+        }
+
+        if (prevstage == 1 && stage == 2)
+        {
+            DialogueBox.instance.gameObject.SetActive(true);
+            DialogueBox.instance.StartDialogue(3);
+            prevstage = 2;
+        }
+        if (collected == 30)
+        {
+            DialogueBox.instance.gameObject.SetActive(true);
+            DialogueBox.instance.StartDialogue(4);
+        }
+
+
 
         //debug section
         if (Input.GetKeyDown(KeyCode.Keypad0))
