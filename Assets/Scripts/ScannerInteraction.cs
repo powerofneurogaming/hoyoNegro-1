@@ -25,8 +25,8 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     float DismantleTimer=1;
     float DismantleCounter = 0;
 
-    int CollectorMax = 3;
-    int CollectorCount = 3;
+    public int CollectorMax = 3;
+    public int CollectorCount = 3;
 
     public bool project = false;
     float sonarCD = 5f;
@@ -70,6 +70,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                 {
                     Bone bone = hit.transform.GetComponent<Bone>();
                     BoneInfomation.instance.CollectBone(bone);
+
                     collected++;
                     stage = Mathf.FloorToInt(collected / 10);
                 }
@@ -208,12 +209,10 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                         if (hit.transform.tag == "Sphere")
                         {
                             ProbeCount++;
-                            ProbcountText.text = ProbeCount.ToString() + "/" + ProbeMax.ToString();
                         }
                         else
                         {
                             CollectorCount++;
-                            CollectorCountText.text = CollectorCount.ToString() + "/" + CollectorMax.ToString();
                         }
                     }
                 }
@@ -280,11 +279,11 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             
         }
 
-
-
+        CollectorCountText.text = CollectorCount.ToString() + "/" + CollectorMax.ToString();
+        ProbcountText.text = ProbeCount.ToString() + "/" + ProbeMax.ToString();
 
         //debug section
-        if(Input.GetKeyDown(KeyCode.Keypad0))
+        if (Input.GetKeyDown(KeyCode.Keypad0))
         {
             foreach(var v in BoneInfomation.instance.holders)
             {
@@ -356,15 +355,15 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     {
         StartCoroutine(SonarFeedback(time, count));
     }
-
+    public Transform sonarSound;
     IEnumerator SonarFeedback(float time, int count)
     {
-        var audios = GetComponents<AudioSource>();
-        Debug.Log(audios[1].clip.name);
+        sonarSound.transform.position = currSonarTarget.transform.position;
+        var audios = sonarSound.GetComponent<AudioSource>();
         yield return new WaitForSeconds(time);
         for(int i = 0; i < count; i++)
         {
-            audios[1].Play();
+            audios.Play();
             yield return new WaitForSeconds(0.5f);
         }
 

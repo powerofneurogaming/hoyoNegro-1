@@ -30,6 +30,7 @@ public class CollectionSphere : MonoBehaviour
             targetBone.transform.position = transform.position;
             targetBone.GetComponent<Bone>().collectable = true;
             targetBone.GetComponent<MeshRenderer>().enabled = true;
+            ScannerInteraction.instance.CollectorCount++;
             Destroy(gameObject);
         }
         yield return null;
