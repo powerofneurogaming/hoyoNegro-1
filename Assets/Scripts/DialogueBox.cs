@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class DialogueBox : Singleton<DialogueBox>
 {
+    public GameObject HUD;
     string[] Intro = new string[]
     {
         "Greetings Explorer. I’m Probe 07 and I’m here to help you on your mission! ",
@@ -107,6 +108,7 @@ public class DialogueBox : Singleton<DialogueBox>
             {
                 GameObject.FindGameObjectWithTag("Player").GetComponent<playerMovement>().enabled = true;
                 GameObject.FindGameObjectWithTag("Player").GetComponent<ScannerInteraction>().enabled = true;
+                HUD.SetActive(true);
                 gameObject.SetActive(false);
                 //ReturnToSelection();
             }

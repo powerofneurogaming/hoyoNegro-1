@@ -358,17 +358,17 @@ PrefabInstance:
     - target: {fileID: 8692045736003432626, guid: 27ee661957af17e4ab53200d6cb03079,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 27.1
+      value: 31.41
       objectReference: {fileID: 0}
     - target: {fileID: 8692045736003432626, guid: 27ee661957af17e4ab53200d6cb03079,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 52.4
+      value: -24.35
       objectReference: {fileID: 0}
     - target: {fileID: 8692045736003432626, guid: 27ee661957af17e4ab53200d6cb03079,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 64.5
+      value: -11.31
       objectReference: {fileID: 0}
     - target: {fileID: 8692045736003432626, guid: 27ee661957af17e4ab53200d6cb03079,
         type: 3}
@@ -5966,6 +5966,42 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &383203575
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 383203576}
+  m_Layer: 5
+  m_Name: Powerup Interactions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &383203576
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 383203575}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1553789376}
+  m_Father: {fileID: 1969174024}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &389341251
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8547,7 +8583,7 @@ MonoBehaviour:
   TextList: []
   boneCount: 000000000000000000000000000000000000000000000000
   message:
-  - Wigi Bear
+  - Wingei Bear
   - Elephant
   - Naia
   - Sloth
@@ -13120,6 +13156,7 @@ MonoBehaviour:
   currProbeTarget: {fileID: 0}
   CollectionOrb: {fileID: 231190067291236481, guid: 016bf9c52b9d97d4fa375a29ea87322d,
     type: 3}
+  prevstage: 0
   stage: 0
   SonarText: {fileID: 782011439}
   ProbcountText: {fileID: 1955760251}
@@ -13127,6 +13164,7 @@ MonoBehaviour:
   probeTips: {fileID: 998863008}
   collectorTips: {fileID: 2006989869}
   placingTips: {fileID: 1731356878}
+  powerupTips: {fileID: 383203575}
   DeconstructionTips: {fileID: 1075057634}
   DeconstructionBar: {fileID: 1556483242}
   HUD: {fileID: 1398483380}
@@ -17843,7 +17881,7 @@ RectTransform:
   - {fileID: 1409308036}
   - {fileID: 1556483241}
   m_Father: {fileID: 1969174024}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -18627,8 +18665,9 @@ GameObject:
   - component: {fileID: 1123760102}
   - component: {fileID: 1123760101}
   - component: {fileID: 1123760103}
+  - component: {fileID: 1123760104}
   m_Layer: 0
-  m_Name: GameObject (1)
+  m_Name: CaveEntraceDialogueTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18677,6 +18716,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1123760104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123760100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a0f4e262efa144b821cb833ff0c657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1127057916 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2431589926842641996, guid: b5cb961d5d4914e4fbe64e824c31a378,
@@ -22283,6 +22334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Persistent: 0
+  HUD: {fileID: 1398483380}
 --- !u!1 &1262818280
 GameObject:
   m_ObjectHideFlags: 0
@@ -25353,7 +25405,7 @@ GameObject:
   - component: {fileID: 1398483381}
   m_Layer: 5
   m_Name: UI Canvas
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28938,6 +28990,84 @@ MonoBehaviour:
   playerIsInTriggerArea: 0
   isPickedUp: 0
   animalType: 
+--- !u!1 &1553789375
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1553789376}
+  - component: {fileID: 1553789378}
+  - component: {fileID: 1553789377}
+  m_Layer: 5
+  m_Name: E
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1553789376
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553789375}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 383203576}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -105.35}
+  m_SizeDelta: {x: 590.7, y: 67.700775}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1553789377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553789375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 1
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Press [E] to collect
+--- !u!222 &1553789378
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553789375}
+  m_CullTransparentMesh: 0
 --- !u!1 &1556483240
 GameObject:
   m_ObjectHideFlags: 0
@@ -35430,6 +35560,7 @@ RectTransform:
   - {fileID: 998863009}
   - {fileID: 2006989870}
   - {fileID: 1731356879}
+  - {fileID: 383203576}
   - {fileID: 1075057635}
   m_Father: {fileID: 1398483384}
   m_RootOrder: 3

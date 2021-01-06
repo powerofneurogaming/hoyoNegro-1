@@ -17,7 +17,7 @@ public class pauseMenu : MonoBehaviour
     private void Update()
     {
         //Esc button listener
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !DialogueBox.instance.gameObject.activeInHierarchy)
         {
             Debug.Log(Time.timeScale);
             if (!gameIsPaused)
@@ -39,6 +39,7 @@ public class pauseMenu : MonoBehaviour
         bkg.SetActive(false);
         foreach(Transform child in GroupsTrs) { child.gameObject.SetActive(false); }
         HUD.SetActive(true);
+        Debug.Log("setting Hud active");
         Time.timeScale = 1f;
         gameIsPaused = false;
     }
@@ -48,6 +49,7 @@ public class pauseMenu : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Confined;
         pauseMenuUI.SetActive(true);
+        HUD.SetActive(false);
         bkg.SetActive(true);
         Time.timeScale = 0f;
         gameIsPaused = true;
