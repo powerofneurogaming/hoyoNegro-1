@@ -264,6 +264,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
         collectorTips.SetActive(false);
         placingTips.SetActive(false);
         DeconstructionTips.SetActive(false);
+        powerupTips.SetActive(false);
         //tooltip section
         if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
         {
@@ -287,7 +288,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             }
             else if (hit.transform.tag == "powerup")
             {
-
+                powerupTips.SetActive(true);
             }
             
         }
