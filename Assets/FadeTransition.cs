@@ -1,5 +1,6 @@
 ﻿// Soucre code created by ryanmillerca https://forum.unity.com/members/ryanmillerca.123917/
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ public class FadeTransition : MonoBehaviour
         if (index + 1 < img.Count)
         {
             Debug.Log("click");
-            StartCoroutine(FadeImage(index));
+            StartCoroutine(FadeOutImage(index));
             index++;
         }
         else
@@ -36,7 +37,8 @@ public class FadeTransition : MonoBehaviour
             //start next scene
         }
     }
-    IEnumerator FadeImage(int index)
+
+    IEnumerator FadeOutImage(int index)
     {
         textboxButton.interactable = false;
         nextImageButton.interactable = false;
@@ -58,19 +60,34 @@ public class FadeTransition : MonoBehaviour
                 yield return null;
         }
         img[index].SetActive(false);
+        yield return new WaitForFixedUpdate();
+        StartCoroutine(FadeInImage(index));
         // fade from transparent to opaque
-       
-            // loop over 1 second
+        // loop over 1 second
+        //for (float i = 0; i <= 2f; i += Time.deltaTime)
+        //{
+        //        // set color with i as alpha
+        //        nextImage.color = new Color(1, 1, 1, i/2f);
+        //        yield return null;
+        //}
+        //Debug.Log("done");
+        //textboxButton.interactable = true;
+        //nextImageButton.interactable = true;
+    }
+    public IEnumerator FadeInImage(int index)
+    {
+        SpriteRenderer nextImage = img[index + 1].GetComponent<SpriteRenderer>();
+        yield return new WaitForSeconds(1f);
+        textManager.PlayAnimation();
+
         for (float i = 0; i <= 2f; i += Time.deltaTime)
         {
-                // set color with i as alpha
-                nextImage.color = new Color(1, 1, 1, i/2f);
-                yield return null;
+            // set color with i as alpha
+            nextImage.color = new Color(1, 1, 1, i / 2f);
+            yield return null;
         }
-        Debug.Log("done");
         textboxButton.interactable = true;
         nextImageButton.interactable = true;
-
     }
     public void NextImage()
     {
@@ -104,8 +121,13 @@ public class FadeTransition : MonoBehaviour
                 textManager.Part8();
                 break;
 
-            case TextManager.GameStates.End:
-                //load next scene
+            case TextManager.GameStates.InsideCave1:
+                OnClick();
+                textManager.state = TextManager.GameStates.InsideCave2;
+                break;
+            case TextManager.GameStates.InsideCave2:
+                //load scene
+                SceneManager.LoadScene("CaveScene");
                 break;
 
             default:

@@ -7,6 +7,8 @@ using TMPro;
 public class TextManager : MonoBehaviour
 {
     [SerializeField]
+    private Animator camAnimator;
+    [SerializeField]
     private AudioManager audio;
     [SerializeField]
     private FadeTransition fade;
@@ -31,11 +33,18 @@ public class TextManager : MonoBehaviour
         audioIndex = 0;
         textSpeed = .04f;
         allText = new List<string>(10);
-        //messageText.text = "Hello World";
+
         Part1();
         StartCoroutine(autoType.ShowText(allText[index], textSpeed));
         audio.PlayClip(audioIndex);
-        //messageText.text = allText[index];
+        camAnimator.Play("zoomout");
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !audio.audioSource.isPlaying)
+        {
+            NextText();
+        }
     }
     public enum GameStates
     {
@@ -52,7 +61,8 @@ public class TextManager : MonoBehaviour
         Google,
         GooglePt2,
         YucatanPen,
-        InsideCave,
+        InsideCave1,
+        InsideCave2,
         End
     }
     public GameStates state;
@@ -85,7 +95,6 @@ public class TextManager : MonoBehaviour
                     "that are now underwater…after a warming planet caused the ice sheets to melt.");
         StartCoroutine(autoType.ShowText(allText[index], textSpeed));
         audio.PlayClip(audioIndex);
-
     }
     public void Part3()
     {
@@ -102,6 +111,7 @@ public class TextManager : MonoBehaviour
 
         StartCoroutine(autoType.ShowText(allText[index], textSpeed));
         audio.PlayClip(audioIndex);
+        camAnimator.Play("topleftPan");
 
     }
     public void Part4()
@@ -167,7 +177,7 @@ public class TextManager : MonoBehaviour
     {
         allText.Clear();
         messageText.text = "";
-        state = GameStates.InsideCave; index = 0; audioIndex++;
+        state = GameStates.InsideCave1; index = 0; audioIndex++;
         allText.Add("We’ve finally arrived at the site of Hoyo Negro located on the Yucatán Peninsula in Mexico. " +
                     "Let’s get ready to dive into the cave and discover Hoyo Negro!");
 
@@ -238,15 +248,56 @@ public class TextManager : MonoBehaviour
                     Part9();
                     break;
 
-                case GameStates.InsideCave:
+                case GameStates.InsideCave1:
                     textbox.SetActive(false);
                     nextImageButton.SetActive(true);
-                    state = GameStates.End;
                     break;
 
                 default:
                     break;
             }
+        }
+    }
+    public void PlayAnimation()
+    {
+        Debug.Log(state);
+        switch (state)
+        {
+            case GameStates.NewIceAge:
+                camAnimator.Play("topdownPan");
+                break;
+
+            case GameStates.Cartel:
+                camAnimator.Play("leftPan");
+                break;
+
+            case GameStates.Yucatan:
+                camAnimator.Play("zoomout");
+                break;
+
+            case GameStates.VisLab2:
+                camAnimator.Play("toprightPan");
+                break;
+            case GameStates.YucatanPen:
+                camAnimator.Play("default");
+                break;
+
+            case GameStates.Google:
+                camAnimator.Play("default");
+                break;
+
+            case GameStates.GooglePt2:
+                camAnimator.Play("zoomIn");
+                break;
+
+            case GameStates.InsideCave1:
+                camAnimator.Play("topdownPan");
+                break;
+            case GameStates.InsideCave2:
+                camAnimator.Play("toprightPan");
+                break;
+            default:
+                break;
         }
     }
 }
