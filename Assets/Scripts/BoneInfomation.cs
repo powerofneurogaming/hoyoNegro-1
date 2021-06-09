@@ -62,7 +62,7 @@ public class BoneInfomation : Singleton<BoneInfomation>
     public TextMeshProUGUI WolfText;
     public List<TextMeshProUGUI> TextList;
     public int[] boneCount = new int[] { 0, 0, 0, 0, 0, 0 };
-    public string[] message = new string[] { "Wigi Bear", "Elephant", "Naia", "Sloth", "Saber-Tooth Tiger", "Wolf" };
+    public string[] message = new string[] { "Wingei Bear", "Elephant", "Naia", "Sloth", "Saber-Tooth Tiger", "Wolf" };
     private void Start()
     {
         InfoTransforms = new List<Transform> { BearInfo, ElephantInfo, NaiaInfo, SlothInfo, TigerInfo, WolfInfo };

@@ -40,6 +40,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
 
     public GameObject CollectionOrb;
     int collected = 0;
+    public int prevstage = 0;
     public int stage = 0;
 
     bool sonarReady = true;
@@ -52,19 +53,16 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
     public GameObject probeTips;
     public GameObject collectorTips;
     public GameObject placingTips;
+    public GameObject powerupTips;
     public GameObject DeconstructionTips;
     public Image DeconstructionBar;
 
     public GameObject HUD;
 
+    bool CanDeconstruct = true;
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            HUD.SetActive(false);
-        }
-
         //collect input
         if (Input.GetMouseButtonDown(1))
         {
@@ -76,7 +74,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                     BoneInfomation.instance.CollectBone(bone);
                     currProbeTarget = null;
                     collected++;
-                    stage = Mathf.FloorToInt(collected / 10);
+                    stage = Mathf.FloorToInt(collected / 12);
                     collectSound.Play();
                 }
             }
@@ -84,7 +82,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
 
 
         //sonar input
-        if (Input.GetKeyDown(KeyCode.R) && sonarReady)
+        if (Input.GetKeyDown(KeyCode.R) && sonarReady && stage==1)
         {
             Instantiate(Sonar, transform.position, Quaternion.identity);
             Transform closest = null; float iniDist = 1000;
@@ -120,7 +118,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
         }
         
         //triangulation sphere
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && stage==2)
         {
             if (placingSphere == null)
             {
@@ -203,7 +201,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
         }
 
         //pickup key
-        if (Input.GetKey(KeyCode.F) && !project)
+        if (Input.GetKey(KeyCode.F) && !project && CanDeconstruct)
         {
             if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
             {
@@ -222,6 +220,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                         {
                             CollectorCount++;
                         }
+                        CanDeconstruct = false;
                     }
                 }
             }
@@ -230,10 +229,11 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
         if (Input.GetKeyUp(KeyCode.F))
         {
             DismantleCounter = 0;
+            CanDeconstruct = true;
         }
 
         //collector key
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && stage>1)
         {
             if (placingSphere == null)
             {
@@ -264,10 +264,11 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
         collectorTips.SetActive(false);
         placingTips.SetActive(false);
         DeconstructionTips.SetActive(false);
+        powerupTips.SetActive(false);
         //tooltip section
         if(Physics.Raycast(CamTrs.position,CamTrs.forward,out hit, 5))
         {
-            Debug.Log(hit.transform.name);
+            //Debug.Log(hit.transform.name);
             if (DismantleCounter > 0)
             {
                 DeconstructionTips.SetActive(true);
@@ -285,11 +286,37 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             {
                 collectorTips.SetActive(true);
             }
+            else if (hit.transform.tag == "powerup")
+            {
+                powerupTips.SetActive(true);
+            }
             
         }
 
         CollectorCountText.text = CollectorCount.ToString() + "/" + CollectorMax.ToString();
         ProbcountText.text = ProbeCount.ToString() + "/" + ProbeMax.ToString();
+
+        if(prevstage==0 && stage == 1)
+        {
+            DialogueBox.instance.gameObject.SetActive(true);
+            DialogueBox.instance.StartDialogue(2);
+            prevstage = 1;
+        }
+
+        if (prevstage == 1 && stage == 2)
+        {
+            DialogueBox.instance.gameObject.SetActive(true);
+            DialogueBox.instance.StartDialogue(3);
+            prevstage = 2;
+        }
+        if (collected == 30)
+        {
+            DialogueBox.instance.gameObject.SetActive(true);
+            DialogueBox.instance.StartDialogue(4);
+            collected = 31;
+        }
+
+
 
         //debug section
         if (Input.GetKeyDown(KeyCode.Keypad0))
@@ -308,10 +335,12 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             {
                 for(int i = 0; i < 2; i++)
                 {
+                    stage = 1;
                     v.GetChild(i).gameObject.SetActive(false);
                 }
                 for(int i= 2; i < v.childCount; i++)
                 {
+                    collected = 24;
                     v.GetChild(i).gameObject.SetActive(true);
                 }
             }
@@ -322,6 +351,7 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
             {
                 for (int i = 0; i < 4; i++)
                 {
+                    stage = 2;
                     v.GetChild(i).gameObject.SetActive(false);
                 }
                 for (int i = 4; i < v.childCount; i++)
@@ -329,6 +359,10 @@ public class ScannerInteraction : Singleton<ScannerInteraction>
                     v.GetChild(i).gameObject.SetActive(true);
                 }
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            collected = 30;
         }
 
     }

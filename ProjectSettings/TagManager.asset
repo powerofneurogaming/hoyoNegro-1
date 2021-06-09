@@ -9,6 +9,7 @@ TagManager:
   - bones
   - collector
   - powerup
+  - HUD
   layers:
   - Default
   - TransparentFX
